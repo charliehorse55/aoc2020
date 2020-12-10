@@ -106,12 +106,9 @@ func adventDay2A(path string) {
 			}
 		}
 		//fmt.Printf("count %d\n", count)
-		valid := false
 		if count >= min && count <= max {
-			valid = true
 			numValid++
 		}
-		fmt.Printf("%d, %d, %c, %s, %t\n", min, max, letter, password, valid)
 
 		//fmt.Printf("numValid = %d\n", numValid)
 
@@ -855,7 +852,7 @@ func main() {
 		fmt.Printf("\n")
 	}
 
-	fmt.Printf("\n\nPart B\n=====================\n")
+	fmt.Printf("\nPart B\n=====================\n")
 	for _,filename := range inputs {
 		fmt.Printf("%s:\n", strings.SplitN(filename, "_", 2)[1])
 		days[(dayToRun-1)*2 + 1](filename)
