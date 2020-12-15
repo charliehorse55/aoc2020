@@ -1250,19 +1250,19 @@ func adventDay14B(path string) {
 	fmt.Printf("%d\n", sum)
 }
 
-func adventDay15Helper(path string, nrounds int) {
+func adventDay15Helper(path string, nrounds int32) {
 	strs := readLines(path)
 	ns := strings.Split(strs[0], ",")
 	n := toInts(ns)
 
-	round := 1
-	spokenHistory := make(map[int]int)
+	round := int32(1)
+	spokenHistory := make(map[int32]int32)
 	for _,val := range n {
-		spokenHistory[val] = round
+		spokenHistory[int32(val)] = round
 		round++
 	}
-	
-	toSpeak := 0
+
+	toSpeak := int32(0)
 	for round < nrounds {
 		last, ok := spokenHistory[toSpeak]
 		spokenHistory[toSpeak] = round
@@ -1279,6 +1279,7 @@ func adventDay15Helper(path string, nrounds int) {
 func adventDay15A(path string) {
 	adventDay15Helper(path, 2020)
 }
+
 func adventDay15B(path string) {
 	adventDay15Helper(path, 30000000)
 }
@@ -1303,7 +1304,7 @@ var days = []func(path string){
 }
 
 func usage() {
-	fmt.Printf("usage:\n\t%s <day number>\n", os.Args[0])
+	fmt.Printf("usage:\n\t%s <day number OR filename starting with day number>\n", os.Args[0])
 }
 
 func main() {
@@ -1314,31 +1315,39 @@ func main() {
 		return
 	}
 
-	dayToRun, err := strconv.ParseInt(flag.Args()[0], 10, 64)
-	if err != nil {
-		usage()
-		return
-	}
-
-	files, err := ioutil.ReadDir(".")
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	var inputs []string
-	for _, file := range files {
-		filename := file.Name()
-		res := strings.Split(filename, "_")
-		if len(res) > 1 {
-			val, err :=  strconv.ParseInt(res[0], 10, 64)
-			if err != nil {
-				continue
-			}
-			if val == dayToRun {
-				inputs = append(inputs, filename)
+
+	dayToRun, err := strconv.ParseInt(flag.Args()[0], 10, 64)
+	if err == nil {
+		files, err := ioutil.ReadDir(".")
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		for _, file := range files {
+			filename := file.Name()
+			res := strings.Split(filename, "_")
+			if len(res) > 1 {
+				val, err :=  strconv.ParseInt(res[0], 10, 64)
+				if err != nil {
+					continue
+				}
+				if val == dayToRun {
+					inputs = append(inputs, filename)
+				}
 			}
 		}
+		return
+	} else {
+		filename := flag.Args()[0]
+		dayToRun, err = strconv.ParseInt(strings.Split(filename, "_")[0], 10, 64)
+		if err != nil {
+			usage()
+			return
+		}
+		inputs = []string{filename}
 	}
+
 
 	aIndex := int(dayToRun-1)*2
 	if aIndex >= len(days) {
