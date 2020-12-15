@@ -1250,6 +1250,42 @@ func adventDay14B(path string) {
 	fmt.Printf("%d\n", sum)
 }
 
+func adventDay15Helper(path string, nrounds int) {
+	strs := readLines(path)
+	ns := strings.Split(strs[0], ",")
+	n := toInts(ns)
+
+	round := 1
+	spokenHistory := make(map[int]int)
+	toSpeak := 0
+	for _,val := range n {
+		spokenHistory[val] = round
+		round++
+	}
+
+	for round < nrounds {
+		//fmt.Printf("%d\n", toSpeak)
+		//generate the next number
+		last, ok := spokenHistory[toSpeak]
+
+		spokenHistory[toSpeak] = round
+
+		if !ok {
+			toSpeak = 0
+		} else {
+			toSpeak = round - last
+		}
+		round++
+	}
+	fmt.Printf("%d\n", toSpeak)
+}
+
+func adventDay15A(path string) {
+	adventDay15Helper(path, 2020)
+}
+func adventDay15B(path string) {
+	adventDay15Helper(path, 30000000)
+}
 
 
 var days = []func(path string){
@@ -1267,6 +1303,7 @@ var days = []func(path string){
 	adventDay12A, adventDay12B,
 	adventDay13A, adventDay13B,
 	adventDay14A, adventDay14B,
+	adventDay15A, adventDay15B,
 }
 
 func usage() {
