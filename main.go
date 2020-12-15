@@ -1256,7 +1256,7 @@ func adventDay15Helper(path string, nrounds int32) {
 	n := toInts(ns)
 
 	round := int32(1)
-	spokenHistory := make(map[int32]int32)
+	spokenHistory := make([]int32, nrounds)
 	for _,val := range n {
 		spokenHistory[int32(val)] = round
 		round++
@@ -1264,9 +1264,9 @@ func adventDay15Helper(path string, nrounds int32) {
 
 	toSpeak := int32(0)
 	for round < nrounds {
-		last, ok := spokenHistory[toSpeak]
+		last := spokenHistory[toSpeak]
 		spokenHistory[toSpeak] = round
-		if !ok {
+		if last == 0 {
 			toSpeak = 0
 		} else {
 			toSpeak = round - last
