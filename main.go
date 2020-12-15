@@ -1257,19 +1257,15 @@ func adventDay15Helper(path string, nrounds int) {
 
 	round := 1
 	spokenHistory := make(map[int]int)
-	toSpeak := 0
 	for _,val := range n {
 		spokenHistory[val] = round
 		round++
 	}
-
+	
+	toSpeak := 0
 	for round < nrounds {
-		//fmt.Printf("%d\n", toSpeak)
-		//generate the next number
 		last, ok := spokenHistory[toSpeak]
-
 		spokenHistory[toSpeak] = round
-
 		if !ok {
 			toSpeak = 0
 		} else {
