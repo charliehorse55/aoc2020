@@ -26,7 +26,7 @@ func solveSimple(foo string) int {
 	return lVal
 }
 
-func solveSimple2(foo string) int {
+func solveSimpleB(foo string) int {
 	f := strings.Fields(foo)
 	lVal,err := strconv.Atoi(f[0])
 	if err != nil { panic(err)}
@@ -57,27 +57,20 @@ func solveEQ(x string, solver func(string) int) int {
 		switch x[pos] {
 		case '(':
 			stack = append(stack, nil)
+
 		case ')':
 			eq := string(stack[len(stack)-1])
-			//fmt.Printf("eq: %s", eq)
 			res := solver(eq)
-			//fmt.Printf(" = %d\n", res)
 			stack = stack[:len(stack)-1]
-
 			stack[len(stack)-1] = append(stack[len(stack)-1], fmt.Sprintf("%d", res)...)
 
-		//case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9:
-			//val,_ := strconv.Atoi(string(x[pos]))
 		default:
 			stack[len(stack)-1] = append(stack[len(stack)-1], x[pos])
-
 		}
 		pos++
 	}
 	eq := string(stack[len(stack)-1])
-	//fmt.Printf("eq: %s", eq)
 	res := solver(eq)
-	//fmt.Printf(" = %d\n", res)
 
 	return res
 }
@@ -97,7 +90,7 @@ func adventDay18B(path string) {
 
 	sum := 0
 	for _,str := range strs {
-		sum += solveEQ(str, solveSimple2)
+		sum += solveEQ(str, solveSimpleB)
 	}
 	fmt.Printf("%d\n", sum)
 }
